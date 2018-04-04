@@ -1,44 +1,30 @@
 require 'pry'
 class PigLatinizer
 
-    def piglatinize(text)
-      array = text.split(/(\.|\?|\,|\!|\ )/)
+  def piglatinize(text)
+    array = text.split(/\b/)
 
-      letters = ('a'..'z').to_a
-      vowels = ['a','e','i','o','u']
-      consonants = letters - vowels
-
-
-      array.map do |word|
+    letters = ('a'..'z').to_a
+    vowels = ['a','e','i','o','u']
+    consonants = letters - vowels
 
 
-        if word.downcase.start_with?(*letters)
-            if word.downcase.start_with?(*consonants)
+    array.map do |word|
 
-              cut = ""
-              word.chars.each do |letter|
-                if !vowels.include?(letter)
-                  cut << word.slice!(0..word.index(letter))
-                else
-                  break
-                end
+      if word.downcase.start_with?(*letters)
+          if word.downcase.start_with?(*consonants)
+            first_vowel = word.chars.find { |letter| vowels.include?(letter.downcase) }
+             word = word.chars.rotate!(word.index(first_vowel) - word.length)
+          elsif word.downcase.start_with?(*vowels)
+            word << "w"
+          end
+          word << "ay"
+      else
+        word
+      end
+    end.join("")
 
-              end
-                word << cut
-            elsif word.downcase.start_with?(*vowels)
-              word << "w"
-            end
-
-            word << "ay"
-
-        else
-          word
-        end
-
-
-      end.join("")
-
-    end
+  end
 
 # puts piglatinize("Once upon a time and a very good time it was there was a moocow coming down along the road and this moocow that was coming down along the road met a nice little boy named baby tuckoo")
 # puts piglatinize("hello, how are you ... doug")
