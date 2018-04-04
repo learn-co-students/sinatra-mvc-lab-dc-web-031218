@@ -2,19 +2,19 @@ require 'pry'
 class PigLatinizer
 
   def piglatinize(text)
+    
     array = text.split(/\b/)
 
     letters = ('a'..'z').to_a
     vowels = ['a','e','i','o','u']
     consonants = letters - vowels
 
-
     array.map do |word|
 
       if word.downcase.start_with?(*letters)
           if word.downcase.start_with?(*consonants)
             first_vowel = word.chars.find { |letter| vowels.include?(letter.downcase) }
-             word = word.chars.rotate!(word.index(first_vowel) - word.length)
+            word = word.chars.rotate!(word.index(first_vowel) - word.length)
           elsif word.downcase.start_with?(*vowels)
             word << "w"
           end
@@ -22,6 +22,7 @@ class PigLatinizer
       else
         word
       end
+
     end.join("")
 
   end
